@@ -1,15 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, FlatList } from 'react-native';
 import { Button, CheckBox, Input, Text, ButtonGroup } from '@rneui/themed';
 import * as Font from 'expo-font';
 import { useEffect, useState, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StackActions } from '@react-navigation/native';
 import * as React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Unorderedlist from 'react-native-unordered-list';
-import Likert from 'react-likert-scale';
 
 const Stack = createNativeStackNavigator()
 
