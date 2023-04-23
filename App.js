@@ -85,7 +85,7 @@ function HomeScreen({navigation}) {
           </FlatList>
           <Button title="Leave Feedback" 
             onPress={() => navigation.navigate("Feedback", FeedbackScreen)}
-            style={{margin: 50}}
+            style={{margin: 20}}
             color= '#3BAC09'
           ></Button>
       </View>
@@ -190,7 +190,7 @@ function FeedbackScreen({navigation}) {
       "Likely",
       "Neutral",
       "Unlikely",
-      "Very Unnlikely",
+      "Very Unlikely",
     ]
   }
   // <Likert {...usefulScale}/>
@@ -204,7 +204,7 @@ function FeedbackScreen({navigation}) {
         onPress={(value) => {
           setSelectedIndex(value)
         }}
-        containerStyle={{ marginBottom: 20 }}
+        containerStyle={{ marginBottom: 20, textAlign: 'center'}}
       ></ButtonGroup>
       <Text style={styles.subheading}>{recScale.question}</Text>
       <ButtonGroup buttons={recScale.choices}
@@ -212,7 +212,7 @@ function FeedbackScreen({navigation}) {
         onPress={(value) => {
           setSelectedIndex2(value)
         }}
-        containerStyle={{ marginBottom: 20 }}
+        containerStyle={{ marginBottom: 20, textAlign: 'center'}}
       ></ButtonGroup>
       <Text style={styles.subheading}>Any other comments?</Text>
       <Input placeholder="Other comments..."></Input>
