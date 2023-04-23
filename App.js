@@ -64,7 +64,7 @@ function HomeScreen({navigation}) {
     }
     return (
     <SafeAreaView>
-      <View>
+      <View style={styles.container}>
         <Text style={styles.heading}>Work It!</Text>
         <Text style={styles.quoteHeading}>Motivational Quote of the Day</Text>
         <Text style={styles.quote}>{selectedQuote}</Text>
@@ -98,27 +98,27 @@ let resetTimer = 0
 function DurationScreen({navigation, route}) {
     let [running, setRunning] = useState(false)
     let [timer, setTimer] = useState(0)
-    let [lapper, setLapper] = useState(0)
-    let [lappedTimes, setLappedTimes] = useState([])
+    // let [lapper, setLapper] = useState(0)
+    // let [lappedTimes, setLappedTimes] = useState([])
     let updateTimer = useCallback(() => {
         if(running){
             setTimer((timer) => timer+10)
         }
     }, [running, setInterval])
 
-    let updateLapper = useCallback(() => {
-      if(!running){
-          setLappedTimes([...lappedTimes, timer])
-          setLapper(timer)
-      }
-  }, [running, timer, lappedTimes])
+  //   let updateLapper = useCallback(() => {
+  //     if(!running){
+  //         setLappedTimes([...lappedTimes, timer])
+  //         setLapper(timer)
+  //     }
+  // }, [running, timer, lappedTimes])
 
-  let recLaps = lappedTimes.map((lapTime, index) => {
-      let mins2 = (Math.floor((lapTime / (1000*60)) % 60)).toString().padStart(2, "0")
-      let secs2 = (Math.floor((lapTime / 1000) % 60)).toString().padStart(2, "0")
-      let mills2 =  (timer % 1000).toString().padStart(3, "0")
-      return <Unorderedlist key={index}>{mins2}:{secs2}:{mills2}</Unorderedlist>
-      })
+  // let recLaps = lappedTimes.map((lapTime, index) => {
+  //     let mins2 = (Math.floor((lapTime / (1000*60)) % 60)).toString().padStart(2, "0")
+  //     let secs2 = (Math.floor((lapTime / 1000) % 60)).toString().padStart(2, "0")
+  //     let mills2 =  (timer % 1000).toString().padStart(3, "0")
+  //     return <Unorderedlist key={index}>{mins2}:{secs2}:{mills2}</Unorderedlist>
+  //     })
 
     useEffect(() => {
       if (running) {
@@ -144,13 +144,8 @@ function DurationScreen({navigation, route}) {
           <Text style={styles.heading}>{route.params.name}</Text>
           <Text style={{fontSize: "3em", fontFamily:"monospace", textAlign: 'center', padding: 10}}>Duration: {mins}:{secs}:{mills}</Text>
           <Button title="Start" style={styles.exerciseButton} onPress={start}></Button>
-          <Button title="Lap" onPress={updateLapper}></Button>
           <Button title="Reset" style={styles.exerciseButton} onPress={reset}></Button>
-          <Button title="Home" style={styles.exerciseButton} onPress={() => navigation.goBack()}></Button>
-          <Text style={styles.subheading}>Lapped Times:</Text>
-          <Unorderedlist style={{listStyleType: "none"}}>
-            <Unorderedlist><Text>{recLaps}</Text></Unorderedlist>
-          </Unorderedlist>  
+          <Button title="Home" style={styles.exerciseButton} onPress={() => navigation.goBack()}></Button>  
         </View>
     )
 }
@@ -273,7 +268,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    padding: 20,
+    padding: 35,
     backgroundColor: '#B5E0A3',
   },
   quote: {
@@ -281,8 +276,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    paddingBottom: 20,
-    backgroundColor: '#B5E0A3',
+    padding: 20,
+    //backgroundColor: '#B5E0A3',
   },
   quoteButton: {
     margin: 6,
