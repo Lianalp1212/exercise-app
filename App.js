@@ -82,7 +82,8 @@ function DurationScreen({navigation, route}) {
   let recLaps = lappedTimes.map((lapTime, index) => {
       let mins2 = (Math.floor((lapTime / (1000*60)) % 60)).toString().padStart(2, "0")
       let secs2 = (Math.floor((lapTime / 1000) % 60)).toString().padStart(2, "0")
-      return <li key={index}>{mins2}:{secs2}</li>
+      let mills2 =  (timer % 1000).toString().padStart(3, "0")
+      return <Unorderedlist key={index}>{mins2}:{secs2}:{mills2}</Unorderedlist>
       })
       console.log(lappedTimes.map)
 
@@ -115,7 +116,7 @@ function DurationScreen({navigation, route}) {
           <Button title="Home" style={styles.exerciseButton} onPress={() => navigation.goBack()}></Button>
           <Text style={styles.subheading}>Lapped Times:</Text>
           <Unorderedlist style={{listStyleType: "none"}}>
-            {recLaps}
+            <Unorderedlist>{recLaps}</Unorderedlist>
           </Unorderedlist>  
         </View>
     )
