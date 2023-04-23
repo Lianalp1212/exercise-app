@@ -1,8 +1,6 @@
-// used lab6 as a base
-
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, FlatList } from 'react-native';
-import { Button, CheckBox, Input, Text } from '@rneui/themed';
+import { Button, CheckBox, Input, Text, ButtonGroup } from '@rneui/themed';
 import * as Font from 'expo-font';
 import { useEffect, useState, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -23,6 +21,7 @@ const HOME_SCREEN = "Home"
 const DURATION_EXERCISE = "Duration"
 const REPITITION_EXERCISE = "Repetition"
 const FEEDBACK_SCREEN = "Feedback"
+const THANKS_SCREEN = "Thanks"
 
 
 
@@ -34,6 +33,7 @@ export default function App({exerciseList}) {
           <Stack.Screen name="Duration" component={DurationScreen} initialParams={{exerciseList: exerciseList}}></Stack.Screen>
           <Stack.Screen name="Repetition" component={RepetitionScreen} initialParams={{exerciseList: exerciseList}}></Stack.Screen>
           <Stack.Screen name="Feedback" component={FeedbackScreen}></Stack.Screen>
+          <Stack.Screen name="Thanks" component={ThanksScreen}></Stack.Screen>
         </Stack.Navigator>
     }</NavigationContainer>
   );
@@ -52,7 +52,9 @@ function HomeScreen({navigation}) {
     return (
     <SafeAreaView>
       <View>
-        <Text style={styles.heading}>Please select an exercise</Text>
+        <Text style={styles.heading}>Work It!</Text>
+        <Text style={styles.quote}>Please select an exercise</Text>
+        <Text style={styles.subheading}>Please select an exercise</Text>
           <FlatList data={exerciseList}
             renderItem={renderExercise}
             keyExtractor={(exercise) =>exercise.key}>
@@ -140,43 +142,63 @@ function RepetitionScreen({navigation, route}) {
     </View>
 }
 
+function ThanksScreen ({navigation}) {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.heading}>Thank you for providing feedback on our app!</Text>
+      <Button title="Home" style={styles.exerciseButton} onPress={() => navigation.navigate("Home", HomeScreen)}></Button>
+    </View>
+  )
+}
+
 function FeedbackScreen({navigation}) {
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [selectedIndex2, setSelectedIndex2] = useState(0)
   const usefulScale = {
     question: "How useful was this app in tracking your workout?",
     choices: [
-      {value: 1, text: "Very Helpful"},
-      {value: 2, text: "Helpful"},
-      {value: 3, text: "Neutral"},
-      {value: 4, text: "Unhelpful"},
-      {value: 5, text: "Very Unhelpful"},
-    ],
-    onChange: val => {
-      console.log(val);
-    }
+      "Very Helpful",
+      "Helpful",
+      "Neutral",
+      "Unhelpful",
+      "Very Unhelpful",
+    ]
   }
-  console.log(usefulScale)
   const recScale = {
     question: "How likely are you to recommend this app to someone?",
     choices: [
-      {value: 1, text: "Very Likely"},
-      {value: 2, text: "Likely"},
-      {value: 3, text: "Neutral"},
-      {value: 4, text: "Unlikely"},
-      {value: 5, text: "Very Unnlikely"},
-    ],
-    onChange: val => {
-      console.log(val);
-    }
+      "Very Likely",
+      "Likely",
+      "Neutral",
+      "Unlikely",
+      "Very Unnlikely",
+    ]
   }
-  console.log(recScale)
+  // <Likert {...usefulScale}/>
+  //     <Likert {...recScale} />
+  
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Please let us know your thoughts!</Text>
-      <Likert {...usefulScale}/>
-      <Likert {...recScale} />
+      <Text style={styles.subheading}>{usefulScale.question}</Text>
+      <ButtonGroup buttons={usefulScale.choices}
+        selectedIndex={selectedIndex}
+        onPress={(value) => {
+          setSelectedIndex(value)
+        }}
+        containerStyle={{ marginBottom: 20 }}
+      ></ButtonGroup>
+      <Text style={styles.subheading}>{recScale.question}</Text>
+      <ButtonGroup buttons={recScale.choices}
+        selectedIndex={selectedIndex2}
+        onPress={(value) => {
+          setSelectedIndex2(value)
+        }}
+        containerStyle={{ marginBottom: 20 }}
+      ></ButtonGroup>
       <Text style={styles.subheading}>Any other comments?</Text>
       <Input placeholder="Other comments..."></Input>
-      <Button title="Submit" style={styles.exerciseButton} onPress={() => navigation.goBack()}></Button>
+      <Button title="Submit" style={styles.exerciseButton} onPress={() => navigation.navigate("Thanks", ThanksScreen)}></Button>
       <Button title="Home" style={styles.exerciseButton} onPress={() => navigation.goBack()}></Button>
     </View>    
   )
@@ -209,17 +231,24 @@ const styles = StyleSheet.create({
     height: 10
   },
   heading: {
-    fontSize: 35,
+    fontSize: 40,
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
     padding: 20
   },
   subheading: {
-    fontSize: 25,
+    fontSize: 30,
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
     padding: 20
-  }
+  },
+  quote: {
+    fontSize: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    padding: 20
+  },
 })
