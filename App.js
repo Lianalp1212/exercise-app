@@ -11,6 +11,7 @@ import { StackActions } from '@react-navigation/native';
 import * as React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Unorderedlist from 'react-native-unordered-list';
+import { color } from '@rneui/base';
 
 const Stack = createNativeStackNavigator()
 
@@ -21,6 +22,7 @@ async function cacheFonts(fonts) {
 const HOME_SCREEN = "Home"
 const DURATION_EXERCISE = "Duration"
 const REPITITION_EXERCISE = "Repetition"
+const FEEDBACK_SCREEN = "Feedback"
 
 
 
@@ -31,6 +33,7 @@ export default function App({exerciseList}) {
           <Stack.Screen name="Home" component={HomeScreen} initialParams={{exerciseList: exerciseList}}></Stack.Screen>
           <Stack.Screen name="Duration" component={DurationScreen} initialParams={{exerciseList: exerciseList}}></Stack.Screen>
           <Stack.Screen name="Repetition" component={RepetitionScreen} initialParams={{exerciseList: exerciseList}}></Stack.Screen>
+          <Stack.Screen name="Feedback" component={FeedbackScreen}></Stack.Screen>
         </Stack.Navigator>
     }</NavigationContainer>
   );
@@ -38,10 +41,10 @@ export default function App({exerciseList}) {
 
 function HomeScreen({navigation}) {
   let exerciseList = [
-  {name: "Running", type: DURATION_EXERCISE, key: 1, related: "Plank"},
-  {name: "Plank", type: DURATION_EXERCISE, key: 2, related: "Running"},
-  {name: "Push Ups", type: REPITITION_EXERCISE, key: 3, related: "Squats"},
-  {name: "Squats", type: REPITITION_EXERCISE, key: 4, related: "Push Ups"}
+  {name: "Running", type: DURATION_EXERCISE, key: 1},
+  {name: "Plank", type: DURATION_EXERCISE, key: 2},
+  {name: "Push Ups", type: REPITITION_EXERCISE, key: 3},
+  {name: "Squats", type: REPITITION_EXERCISE, key: 4},
 ]
   let renderExercise = ({item, key}) => 
     <Button title={item.name} testID={`${item.name}-button`} style={styles.button}
@@ -54,6 +57,11 @@ function HomeScreen({navigation}) {
             renderItem={renderExercise}
             keyExtractor={(exercise) =>exercise.key}>
           </FlatList>
+          <Button title="Leave Feedback" 
+            onPress={() => navigation.navigate("Feedback", FeedbackScreen)}
+            style={{margin: 50}}
+            color= '#3BAC09'
+          ></Button>
       </View>
     </SafeAreaView>
   )
@@ -107,7 +115,7 @@ function DurationScreen({navigation, route}) {
     let secs = (Math.floor((timer / 1000) % 60)).toString().padStart(2, "0")
     let mills =  (timer % 1000).toString().padStart(3, "0")
     return (
-        <View>
+        <View style={styles.container}>
           <Text style={styles.heading}>{route.params.name}</Text>
           <Text style={{fontSize: "3em", fontFamily:"monospace", textAlign: 'center', padding: 10}}>Duration: {mins}:{secs}:{mills}</Text>
           <Button title="Start" style={styles.exerciseButton} onPress={start}></Button>
@@ -116,23 +124,31 @@ function DurationScreen({navigation, route}) {
           <Button title="Home" style={styles.exerciseButton} onPress={() => navigation.goBack()}></Button>
           <Text style={styles.subheading}>Lapped Times:</Text>
           <Unorderedlist style={{listStyleType: "none"}}>
-            <Unorderedlist>{recLaps}</Unorderedlist>
+            <Unorderedlist><Text>{recLaps}</Text></Unorderedlist>
           </Unorderedlist>  
         </View>
     )
 }
 
-function RepetitionScreen({navigation, route, exerciseList}) {
+function RepetitionScreen({navigation, route}) {
     let [count, setCount] = useState(0)
-    return <View>
+    return <View style={styles.container}>
       <Text style={styles.heading}>{route.params.name}</Text>
       <Text style={{fontSize: "3em", textAlign: 'center', padding: 10}}>{count}</Text>
       <Button title="Add" style={styles.exerciseButton} onPress={()=>setCount(count=>count+1)}></Button>
       <Button title="Reset" style={styles.exerciseButton} onPress={()=>setCount(0)}></Button>
       <Button title="Home" style={styles.exerciseButton} onPress={() => navigation.goBack()}></Button>
-      <Text style={styles.subheading}>Related Exercise:</Text>
-      <Button title="Related Exercise" style={styles.button}/>
     </View>
+}
+
+function FeedbackScreen({navigation}) {
+  
+  return (
+    <View style={styles.container}>
+      <Text style={styles.heading}>Please let us know your thoughts!</Text>
+      <Button title="Home" style={styles.exerciseButton} onPress={() => navigation.goBack()}></Button>
+    </View>    
+  )
 }
 
 const styles = StyleSheet.create({
@@ -152,7 +168,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   exerciseButton: {
-    margin: 6
+    margin: 6,
+  },
+  fbButton: {
+    margin: 6,
+    backgroundColor: '#3BAC09', 
   },
   space: {
     height: 10
