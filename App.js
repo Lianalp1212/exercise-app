@@ -11,13 +11,13 @@ import { StackActions } from '@react-navigation/native';
 import * as React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Unorderedlist from 'react-native-unordered-list';
-import { color } from '@rneui/base';
+import Likert from 'react-likert-scale';
 
 const Stack = createNativeStackNavigator()
 
-async function cacheFonts(fonts) {
-  return fonts.map(async (font) => await Font.loadAsync(font))
-}
+// async function cacheFonts(fonts) {
+//   return fonts.map(async (font) => await Font.loadAsync(font))
+// }
 
 const HOME_SCREEN = "Home"
 const DURATION_EXERCISE = "Duration"
@@ -93,7 +93,6 @@ function DurationScreen({navigation, route}) {
       let mills2 =  (timer % 1000).toString().padStart(3, "0")
       return <Unorderedlist key={index}>{mins2}:{secs2}:{mills2}</Unorderedlist>
       })
-      console.log(lappedTimes.map)
 
     useEffect(() => {
       if (running) {
@@ -142,10 +141,42 @@ function RepetitionScreen({navigation, route}) {
 }
 
 function FeedbackScreen({navigation}) {
-  
+  const usefulScale = {
+    question: "How useful was this app in tracking your workout?",
+    choices: [
+      {value: 1, text: "Very Helpful"},
+      {value: 2, text: "Helpful"},
+      {value: 3, text: "Neutral"},
+      {value: 4, text: "Unhelpful"},
+      {value: 5, text: "Very Unhelpful"},
+    ],
+    onChange: val => {
+      console.log(val);
+    }
+  }
+  console.log(usefulScale)
+  const recScale = {
+    question: "How likely are you to recommend this app to someone?",
+    choices: [
+      {value: 1, text: "Very Likely"},
+      {value: 2, text: "Likely"},
+      {value: 3, text: "Neutral"},
+      {value: 4, text: "Unlikely"},
+      {value: 5, text: "Very Unnlikely"},
+    ],
+    onChange: val => {
+      console.log(val);
+    }
+  }
+  console.log(recScale)
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Please let us know your thoughts!</Text>
+      <Likert {...usefulScale}/>
+      <Likert {...recScale} />
+      <Text style={styles.subheading}>Any other comments?</Text>
+      <Input placeholder="Other comments..."></Input>
+      <Button title="Submit" style={styles.exerciseButton} onPress={() => navigation.goBack()}></Button>
       <Button title="Home" style={styles.exerciseButton} onPress={() => navigation.goBack()}></Button>
     </View>    
   )
