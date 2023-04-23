@@ -23,7 +23,14 @@ const REPITITION_EXERCISE = "Repetition"
 const FEEDBACK_SCREEN = "Feedback"
 const THANKS_SCREEN = "Thanks"
 
-
+let mQuotes = [
+  "It does not matter how slowly you go as long as you do not stop - Confucius",
+  "It always seems impossible until it's done - Nelson Mandela",
+  "The most effective way to do it, is to do it - Amelia Earhart",
+  "Do the difficult things while they are easy and do the great things while they are small. A journey of a thousand miles must begin with a single step - Lao Tzu",
+  "Setting goals is the first step in turning the invisible into the visible - Tony Robbins",
+  "Just Do It - Shia LaBeouf",
+]
 
 export default function App({exerciseList}) {
     return (
@@ -41,19 +48,36 @@ export default function App({exerciseList}) {
 
 function HomeScreen({navigation}) {
   let exerciseList = [
-  {name: "Running", type: DURATION_EXERCISE, key: 1},
-  {name: "Plank", type: DURATION_EXERCISE, key: 2},
-  {name: "Push Ups", type: REPITITION_EXERCISE, key: 3},
-  {name: "Squats", type: REPITITION_EXERCISE, key: 4},
-]
+    {name: "Running", type: DURATION_EXERCISE, key: 1},
+    {name: "Plank", type: DURATION_EXERCISE, key: 2},
+    {name: "Push Ups", type: REPITITION_EXERCISE, key: 3},
+    {name: "Squats", type: REPITITION_EXERCISE, key: 4},
+  ] 
   let renderExercise = ({item, key}) => 
     <Button title={item.name} testID={`${item.name}-button`} style={styles.button}
-    onPress={() => navigation.navigate(item.type === DURATION_EXERCISE ? DURATION_EXERCISE : REPITITION_EXERCISE, {exerciseKey: key, name: item.name})} />
+      onPress={() => navigation.navigate(item.type === DURATION_EXERCISE ? DURATION_EXERCISE : REPITITION_EXERCISE, {exerciseKey: key, name: item.name})}
+    ></Button>
+    const [selectedQuote, setSelectedQuote] = useState("")
+    let handleQuote = () => {
+      let randomNum = Math.floor(Math.random() * mQuotes.length)
+      setSelectedQuote(mQuotes[randomNum])
+    }
     return (
     <SafeAreaView>
       <View>
         <Text style={styles.heading}>Work It!</Text>
-        <Text style={styles.quote}>Please select an exercise</Text>
+        <Text style={styles.quoteHeading}>Motivational Quote of the Day</Text>
+        <Text style={styles.quote}>{selectedQuote}</Text>
+        <Button title="Get Quote"
+          titleStyle={{
+            color:'black'
+          }}
+          buttonStyle={{
+            margin: 6,
+            backgroundColor: '#B5E0A3'
+          }}
+          onPress={() => handleQuote()}
+        ></Button>
         <Text style={styles.subheading}>Please select an exercise</Text>
           <FlatList data={exerciseList}
             renderItem={renderExercise}
@@ -176,7 +200,6 @@ function FeedbackScreen({navigation}) {
   }
   // <Likert {...usefulScale}/>
   //     <Likert {...recScale} />
-  
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Please let us know your thoughts!</Text>
@@ -235,7 +258,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    padding: 20
+    padding: 20,
+    fontWeight: 'bold'
   },
   subheading: {
     fontSize: 30,
@@ -244,11 +268,24 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 20
   },
-  quote: {
+  quoteHeading: {
     fontSize: 20,
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    padding: 20
+    padding: 20,
+    backgroundColor: '#B5E0A3',
+  },
+  quote: {
+    fontSize: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    paddingBottom: 20,
+    backgroundColor: '#B5E0A3',
+  },
+  quoteButton: {
+    margin: 6,
+    backgroundColor: '#B5E0A3',
   },
 })
